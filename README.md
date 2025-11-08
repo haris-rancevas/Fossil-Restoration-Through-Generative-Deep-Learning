@@ -1,44 +1,20 @@
 # Fossil Restoration Through Generative Deep Learning
 
-**MSc Artificial Intelligence Dissertation** | University of Essex | 2025
+**MSc Artificial Intelligence | University of Essex | 2025**
 
-This repository contains the implementation, dataset, and fine-tuned model for the project "Fossil Restoration Through Generative Deep Learning", which applies Stable Diffusion with LoRA fine-tuning to reconstruct damaged fossil images and uses depth estimation to generate corresponding 3D structures.
+This repository contains the implementation of a deep learning pipeline for reconstructing damaged fossil specimens using Stable Diffusion with LoRA fine-tuning. The project explores whether pre-trained diffusion models can be adapted for paleontological reconstruction with limited training data (465 specimens).
+
+The model achieves convergence within 2 training epochs, with a PSNR of 32.95 dB and SSIM of 0.9444. By working with 2D views instead of direct 3D generation, this approach circumvents the resolution limitations of voxel-based methods, maintaining morphological detail that would otherwise be lost. The pipeline uses depth estimation to generate partial 3D representations from reconstructed 2D views.
 
 ## Overview
 
 This project demonstrates a complete pipeline for automated fossil reconstruction using diffusion-based deep learning and depth estimation.
 
-It includes the following key components:
+### Components
 
-- **`fossil-inpainting-sd.ipynb`** — Kaggle notebook used to **fine-tune a Stable Diffusion Inpainting model** for ammonite fossil reconstruction.
-
-- **`estimate.py`** — Python script that uses **Depth Anything V2** to estimate depth and **reconstruct 3D fossil structures** from the 2D inpainted images.
-
-- **`dataset`** — Contains fossil specimen data sourced from the **GB3D Type Fossil Repository**, focusing on **ammonite fossils** from the order _Ammonitida_. Access [here](https://drive.google.com/file/d/1ADHKe8hkKHccMcyGnCBiyZCLnl1mEB3A/view?usp=sharing).
-
-- **`sd_fossil_lora`** — Directory containing the **fine-tuned LoRA weights** and configurations for Stable Diffusion.
-
-## Project Structure
-
-```bash
-├── fossil-inpainting-sd.ipynb # Kaggle notebook for Stable Diffusion LoRA fine-tuning
-└── to_3d/
-│    ├── estimate.py # 3D reconstruction using Depth Anything
-│    └── requirements.txt
-```
-
-### Fine-tuned LoRA weights
-
-Access directory containing the **fine-tuned LoRA weights** and configurations for Stable Diffusion [here](https://drive.google.com/file/d/1Te3pJn9gjz5sdj8qyhXVL5FbDphEUaXU/view?usp=sharing).
-
-```bash
-└── sd_fossil_lora/
-    ├── epoch_10/
-    │    ├── model.safetensors # Final fine-tuned LoRA weights
-    │    ├── optimizer.bin
-    │    ├── scaler.pt
-    │    └──  random_states_0.pkl
-    └── fossil_lora_unet/
-        ├── adapter_model.safetensors # LoRA adapter weights
-        └── adapter_config.json # LoRA configuration
-```
+| File                         | Description                                                          | Link                                                                                         |
+| ---------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `fossil-inpainting-sd.ipynb` | Kaggle notebook for fine-tuning Stable Diffusion on ammonite fossils | -                                                                                            |
+| `estimate.py`                | Depth estimation and 3D generation using Depth Anything V2           | -                                                                                            |
+| `dataset.zip`                | 465 ammonite specimens                                               | [Access](https://drive.google.com/file/d/1ADHKe8hkKHccMcyGnCBiyZCLnl1mEB3A/view?usp=sharing) |
+| `sd_fossil_lora.zip`         | Fine-tuned LoRA weights for Stable Diffusion                         | [Access](https://drive.google.com/file/d/1Te3pJn9gjz5sdj8qyhXVL5FbDphEUaXU/view?usp=sharing) |
