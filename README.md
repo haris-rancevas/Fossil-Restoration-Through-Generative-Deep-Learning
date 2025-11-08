@@ -15,6 +15,31 @@ This project demonstrates a complete pipeline for automated fossil reconstructio
 | File                         | Description                                                          | Link                                                                                         |
 | ---------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
 | `fossil-inpainting-sd.ipynb` | Kaggle notebook for fine-tuning Stable Diffusion on ammonite fossils | -                                                                                            |
-| `estimate.py`                | Depth estimation and 3D generation using Depth Anything V2           | -                                                                                            |
+| `to_3d/estimate.py`          | Depth estimation and 3D generation using Depth Anything V2           | -                                                                                            |
 | `dataset.zip`                | 465 ammonite specimens                                               | [Access](https://drive.google.com/file/d/1ADHKe8hkKHccMcyGnCBiyZCLnl1mEB3A/view?usp=sharing) |
 | `sd_fossil_lora.zip`         | Fine-tuned LoRA weights for Stable Diffusion                         | [Access](https://drive.google.com/file/d/1Te3pJn9gjz5sdj8qyhXVL5FbDphEUaXU/view?usp=sharing) |
+
+## Getting Started
+
+Extract the dataset and LoRA weights from their respective zip files. The training notebook can be run on Kaggle.
+
+### 3D Reconstruction
+
+To generate 3D models from reconstructed fossil images:
+
+1. Install dependencies:
+
+```bash
+cd to_3d
+pip install -r requirements.txt
+```
+
+2. Edit `estimate.py` and replace `IMAGE_PATH` with your inpainted fossil image path
+
+3. Run the reconstruction:
+
+```bash
+python estimate.py
+```
+
+This will generate a depth map and corresponding 3D mesh from your reconstructed fossil image.
