@@ -19,7 +19,7 @@ This project demonstrates a complete pipeline for automated fossil reconstructio
 | `dataset.zip`                | 465 ammonite specimens                                               | [Access](https://drive.google.com/file/d/1ADHKe8hkKHccMcyGnCBiyZCLnl1mEB3A/view?usp=sharing) |
 | `sd_fossil_lora.zip`         | Fine-tuned LoRA weights for Stable Diffusion                         | [Access](https://drive.google.com/file/d/1Te3pJn9gjz5sdj8qyhXVL5FbDphEUaXU/view?usp=sharing) |
 
-## Getting Started
+## Usage
 
 Extract the dataset and LoRA weights from their respective zip files. The training notebook can be run on Kaggle.
 
