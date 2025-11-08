@@ -23,20 +23,20 @@ This project demonstrates a complete pipeline for automated fossil reconstructio
 
 Extract the dataset and LoRA weights from their respective zip files. The training notebook can be run on Kaggle.
 
-### 3D Reconstruction
+**3D Reconstruction**
 
 To generate 3D models from reconstructed fossil images:
 
-1. Install dependencies:
+Install dependencies:
 
 ```bash
 cd to_3d
 pip install -r requirements.txt
 ```
 
-2. Edit `estimate.py` and replace `IMAGE_PATH` with your inpainted fossil image path
+Edit `estimate.py` and replace `IMAGE_PATH` with your inpainted fossil image path
 
-3. Run the reconstruction:
+Run the reconstruction:
 
 ```bash
 python estimate.py
