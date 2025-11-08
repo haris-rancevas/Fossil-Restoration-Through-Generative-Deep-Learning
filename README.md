@@ -14,7 +14,7 @@ It includes the following key components:
 
 - **`estimate.py`** — Python script that uses **Depth Anything V2** to estimate depth and **reconstruct 3D fossil structures** from the 2D inpainted images.
 
-- **`dataset.zip`** — Contains fossil specimen data sourced from the **GB3D Type Fossil Repository**, focusing on **ammonite fossils** from the order _Ammonitida_.
+- **`dataset`** — Contains fossil specimen data sourced from the **GB3D Type Fossil Repository**, focusing on **ammonite fossils** from the order _Ammonitida_. Access [here](https://drive.google.com/file/d/1ADHKe8hkKHccMcyGnCBiyZCLnl1mEB3A/view?usp=sharing).
 
 - **`sd_fossil_lora`** — Directory containing the **fine-tuned LoRA weights** and configurations for Stable Diffusion.
 
@@ -22,13 +22,12 @@ It includes the following key components:
 
 ```bash
 ├── fossil-inpainting-sd.ipynb # Kaggle notebook for Stable Diffusion LoRA fine-tuning
-├── dataset.zip # Fossil dataset
 └── to_3d/
 │    ├── estimate.py # 3D reconstruction using Depth Anything
-│    └── requirements.txt # Required Python packages
+│    └── requirements.txt
 ```
 
-#### Google Drive
+### Fine-tuned LoRA weights
 
 Access directory containing the **fine-tuned LoRA weights** and configurations for Stable Diffusion [here](https://drive.google.com/file/d/1Te3pJn9gjz5sdj8qyhXVL5FbDphEUaXU/view?usp=sharing).
 
