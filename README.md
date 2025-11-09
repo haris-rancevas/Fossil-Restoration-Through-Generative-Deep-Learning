@@ -69,7 +69,7 @@ _Figure 2: Estimated depth map showing surface topology_.
 If you use this work, please cite:
 
 ```bibtex
-@mastersthesis{rancevas2025fossil,
+@mastersthesis{rancevas2025generativeinpaintingfossils,
   title={Fossil Restoration Through Generative Deep Learning},
   author={Rancevas, H.},
   year={2025},
