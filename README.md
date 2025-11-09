@@ -23,6 +23,16 @@ The repository provides end-to-end code for 2D inpainting and 3D depth reconstru
 
 The training notebook (`fossil-inpainting-sd.ipynb`) shows the fine-tuning process used on Kaggle with the provided dataset. The LoRA weights are provided but require separate inference setup.
 
+## Dataset
+
+The augmented dataset is divided into training (85%), validation (10%), and test (5%) sets, resulting in:
+
+- **Training set**: 3,156 image pairs (85%) used for model optimization
+- **Validation set**: 372 image pairs (10%) for hyperparameter tuning and early stopping
+- **Test set**: 187 image pairs (5%) for final evaluation
+
+Thee dataset is derived from 465 distinct fossil specimens from the [GB3D](https://www.3d-fossils.ac.uk/) repository. The 85/10/5 split prioritizes training data volume given the limited total dataset size, while maintaining sufficient held-out data for evaluation.
+
 <br></br>
 
 ![Figure 1: Damage Pattern](sample_outputs/damage_pattern_example.png)
@@ -38,6 +48,7 @@ The training notebook (`fossil-inpainting-sd.ipynb`) shows the fine-tuning proce
 ![Figure 3: Base Model Comparison](sample_outputs/base_model_compared.png)
 
 <p align="center"><em>Figure 3: Comparison between base model and fine-tuned model.</em></p>
+
 <br></br>
 
 **3D Reconstruction**
