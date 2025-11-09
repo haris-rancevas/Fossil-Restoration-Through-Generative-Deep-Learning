@@ -96,6 +96,5 @@ If you use this work, please cite:
   year={2025},
   school={University of Essex},
   type={MSc Dissertation},
-  note={MSc Artificial Intelligence}
 }
 ```
