@@ -95,6 +95,6 @@ If you use this work, please cite:
   author={Rancevas, H.},
   year={2025},
   school={University of Essex},
-  type={MSc Dissertation},
+  type={MSc Dissertation}
 }
 ```
