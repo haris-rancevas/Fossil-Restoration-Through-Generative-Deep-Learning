@@ -23,6 +23,20 @@ The repository provides end-to-end code for 2D inpainting and 3D depth reconstru
 
 The training notebook (`fossil-inpainting-sd.ipynb`) shows the fine-tuning process used on Kaggle with the provided dataset. The LoRA weights are provided but require separate inference setup.
 
+**Sample Outputs - 2D Inpainting**
+
+![Figure 1: Damage Pattern Example](sample_outputs/damage_pattern_example.gif)
+
+<p align="center"><em>Figure 1: Example damage pattern applied to fossil specimens.</em></p>
+
+![Figure 2: Inpainting Results](sample_outputs/inpainting_results.png)
+
+<p align="center"><em>Figure 2: Inpainting results showing reconstruction quality.</em></p>
+
+![Figure 3: Base Model Comparison](sample_outputs/base_model_compared.png)
+
+<p align="center"><em>Figure 3: Comparison between base model and fine-tuned model.</em></p>
+
 **3D Reconstruction**
 
 To generate 3D models from reconstructed fossil images:
@@ -56,13 +70,15 @@ Parameters:
 
 This will generate a depth map and corresponding 3D mesh from your reconstructed fossil image.
 
-**Sample Outputs**
+**Sample Outputs - 3D Reconstruction**
 
-![Figure 1: 3D Surface Reconstruction](to_3d/sample_outputs/reconstruction.png)
-_Figure 1: 3D surface reconstruction from depth estimation_.
+![Figure 4: 3D Surface Reconstruction](sample_outputs/reconstruction.png)
 
-![Figure 2: Depth Map](to_3d/sample_outputs/depth_map.png)
-_Figure 2: Estimated depth map showing surface topology_.
+<p align="center"><em>Figure 4: 3D surface reconstruction from depth estimation.</em></p>
+
+![Figure 5: Depth Map](sample_outputs/depth_map.png)
+
+<p align="center"><em>Figure 5: Estimated depth map showing surface topology.</em></p>
 
 ## Citation
 
