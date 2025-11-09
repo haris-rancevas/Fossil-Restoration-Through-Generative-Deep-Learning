@@ -8,7 +8,7 @@ The model achieves convergence within 2 training epochs, with a PSNR of 32.95 dB
 
 ## Overview
 
-This project demonstrates a complete pipeline for automated fossil reconstruction using diffusion-based deep learning and depth estimation.
+The repository provides end-to-end code for 2D inpainting and 3D depth reconstruction.
 
 ### Components
 
@@ -21,11 +21,18 @@ This project demonstrates a complete pipeline for automated fossil reconstructio
 
 ## Usage
 
-Extract the dataset and LoRA weights from their respective zip files. The training notebook can be run on Kaggle.
+The training notebook (`fossil-inpainting-sd.ipynb`) shows the fine-tuning process used on Kaggle with the provided dataset. The LoRA weights are provided but require separate inference setup.
 
 **3D Reconstruction**
 
 To generate 3D models from reconstructed fossil images:
+
+Create [conda](https://anaconda.org/anaconda/conda) environment (isolates dependencies):
+
+```bash
+conda create -n myenv python=3.10.15
+conda activate myenv
+```
 
 Install dependencies:
 
@@ -34,12 +41,40 @@ cd to_3d
 pip install -r requirements.txt
 ```
 
-Edit `estimate.py` and replace `IMAGE_PATH` with your inpainted fossil image path
-
 Run the reconstruction:
 
 ```bash
-python estimate.py
+python estimate.py --image path/to/image.png --detail 1 --elevation 90 --azimuth 90
 ```
 
+Parameters:
+
+- `--image`: Path to input image (default: reconstructed.png)
+- `--detail`: Visualization detail level (1=max, 2=half, 3=third, etc.) (default: 1)
+- `--elevation`: Default elevation angle for 3D view (default: 92)
+- `--azimuth`: Default azimuth angle for 3D view (default: 90)
+
 This will generate a depth map and corresponding 3D mesh from your reconstructed fossil image.
+
+**Sample Outputs**
+
+![Figure 1: 3D Surface Reconstruction](to_3d/sample_outputs/reconstruction.png)
+_Figure 1: 3D surface reconstruction from depth estimation_.
+
+![Figure 2: Depth Map](to_3d/sample_outputs/depth_map.png)
+_Figure 2: Estimated depth map showing surface topology_.
+
+## Citation
+
+If you use this work, please cite:
+
+```bibtex
+@mastersthesis{rancevas2025fossil,
+  title={Fossil Restoration Through Generative Deep Learning},
+  author={Rancevas, H.},
+  year={2025},
+  school={University of Essex},
+  type={MSc Dissertation},
+  note={MSc Artificial Intelligence}
+}
+```

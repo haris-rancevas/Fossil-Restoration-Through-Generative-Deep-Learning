@@ -1,11 +1,14 @@
-from transformers import pipeline
-from PIL import Image
-import numpy as np
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
-from scipy.ndimage import gaussian_filter
 import cv2
 import os
+import argparse
+import numpy as np
+import matplotlib.pyplot as plt
+
+from transformers import pipeline
+from PIL import Image
+from mpl_toolkits.mplot3d import Axes3D
+from scipy.ndimage import gaussian_filter
+
 
 def enhance_depth_detail(depth_map, remove_background=True):
     """Enhance depth map for better 3D detail"""
@@ -31,13 +34,12 @@ def enhance_depth_detail(depth_map, remove_background=True):
     
     return depth_final
 
-def create_detailed_3d(image_path, output_name="3d_model"):
+def create_detailed_3d(image_path):
     """
     Convert single image to detailed 3D using Depth-Anything
     
     Args:
         image_path: Path to input image
-        output_name: Name for output files (without extension)
     """
     
     print("Loading Depth-Anything model...")
@@ -77,7 +79,7 @@ def create_detailed_3d(image_path, output_name="3d_model"):
     
     return x, y, z_enhanced, img_array, depth_map
 
-def visualize_3d_surface(x, y, z, colors, title="3D Surface", ax=None, step=2, view_angle=(90, -90), z_limit=None, roll=0, flip_v=False, flip_h=False):
+def visualize_3d_surface(x, y, z, colors, title="3D Surface", ax=None, step=2, view_angle=(90, -90)):
     """Create 3D surface visualization
     
     Args:
@@ -87,8 +89,6 @@ def visualize_3d_surface(x, y, z, colors, title="3D Surface", ax=None, step=2, v
         ax: Matplotlib axis (if None, creates new figure)
         step: Subsampling step (lower = more detail)
         view_angle: (elevation, azimuth) for viewing angle
-        z_limit: Optional tuple (min, max) to set z-axis limits
-        roll: Roll angle in degrees (simulated by rotating data)
     """
     print(f"Creating 3D surface visualization (step={step} for detail)...")
     
@@ -102,44 +102,6 @@ def visualize_3d_surface(x, y, z, colors, title="3D Surface", ax=None, step=2, v
     if ax is None:
         fig = plt.figure(figsize=(15, 10))
         ax = fig.add_subplot(111, projection='3d')
-    
-    # Remove the default flip - only apply flips when explicitly requested
-    
-    # Apply flips based on settings
-    if flip_v:
-        print("Applying vertical flip...")
-        # Vertical flip (top-bottom)
-        x_sub = np.flipud(x_sub)
-        y_sub = np.flipud(y_sub)
-        z_sub = np.flipud(z_sub)
-        colors_sub = np.flipud(colors_sub)
-    
-    if flip_h:
-        print("Applying horizontal flip (mirror)...")
-        # Create mirror effect by inverting x coordinates
-        x_max = x_sub.max()
-        x_min = x_sub.min()
-        x_sub = x_max + x_min - x_sub  # Invert x coordinates
-        # Also flip the colors to match
-        colors_sub = np.fliplr(colors_sub)
-        z_sub = np.fliplr(z_sub)
-    
-    # Apply roll rotation if specified (rotate around z-axis)
-    if roll != 0:
-        # Convert roll to radians
-        roll_rad = np.radians(roll)
-        # Center the data
-        x_center = (x_sub.max() + x_sub.min()) / 2
-        y_center = (y_sub.max() + y_sub.min()) / 2
-        # Translate to origin
-        x_centered = x_sub - x_center
-        y_centered = y_sub - y_center
-        # Apply rotation matrix
-        x_rotated = x_centered * np.cos(roll_rad) - y_centered * np.sin(roll_rad)
-        y_rotated = x_centered * np.sin(roll_rad) + y_centered * np.cos(roll_rad)
-        # Translate back
-        x_sub = x_rotated + x_center
-        y_sub = y_rotated + y_center
     
     # Ensure colors are properly formatted
     if len(colors_sub.shape) == 2:
@@ -181,7 +143,7 @@ def visualize_3d_surface(x, y, z, colors, title="3D Surface", ax=None, step=2, v
     # The positions are controlled mainly by the viewing angle
     
     # Display rotation info
-    print(f"Current view angle: elevation={view_angle[0]}°, azimuth={view_angle[1]}°, roll={roll}°")
+    print(f"Current view angle: elevation={view_angle[0]}°, azimuth={view_angle[1]}°")
     print("Rotate the 3D plot with mouse to find desired angle")
     print("Close the plot window to see final rotation values")
     
@@ -195,10 +157,6 @@ def visualize_3d_surface(x, y, z, colors, title="3D Surface", ax=None, step=2, v
     
     # Make z-axis vertical and visible from top
     ax.zaxis.set_rotate_label(False)  # Don't rotate z label
-    
-    # Set z-axis limits if specified
-    if z_limit is not None:
-        ax.set_zlim(z_limit)
     
     if ax is None:
         plt.tight_layout()
@@ -245,164 +203,34 @@ def visualize_3d_points(x, y, z, colors, title="3D Point Cloud"):
     plt.tight_layout()
     plt.show()
 
-def save_mesh_ply(x, y, z, colors, filename, step=2):
-    """Save PLY file with triangulated mesh and vertex colors"""
-    print(f"Saving mesh PLY file: {filename}")
-    
-    # Create regular grid of vertices
-    x_sub = x[::step, ::step]
-    y_sub = y[::step, ::step] 
-    z_sub = z[::step, ::step]
-    colors_sub = colors[::step, ::step]
-    
-    # Flip vertically to match visualization
-    x_sub = np.flipud(x_sub)
-    y_sub = np.flipud(y_sub)
-    z_sub = np.flipud(z_sub)
-    colors_sub = np.flipud(colors_sub)
-    
-    rows, cols = x_sub.shape
-    
-    # Flatten vertices
-    vertices = []
-    vertex_colors = []
-    
-    for i in range(rows):
-        for j in range(cols):
-            vertices.append([x_sub[i,j], y_sub[i,j], z_sub[i,j]])
-            vertex_colors.append(colors_sub[i,j])
-    
-    # Create triangular faces
-    faces = []
-    for i in range(rows-1):
-        for j in range(cols-1):
-            # Current vertex indices in flattened array
-            v1 = i * cols + j
-            v2 = i * cols + (j + 1)
-            v3 = (i + 1) * cols + j
-            v4 = (i + 1) * cols + (j + 1)
-            
-            # Create two triangles per quad
-            faces.append([v1, v2, v3])  # First triangle
-            faces.append([v2, v4, v3])  # Second triangle
-    
-    print(f"Saving {len(vertices)} vertices and {len(faces)} faces...")
-    
-    # Write PLY file
-    with open(filename, 'w') as f:
-        f.write('ply\n')
-        f.write('format ascii 1.0\n')
-        f.write(f'element vertex {len(vertices)}\n')
-        f.write('property float x\n')
-        f.write('property float y\n')
-        f.write('property float z\n')
-        f.write('property uchar red\n')
-        f.write('property uchar green\n')
-        f.write('property uchar blue\n')
-        f.write(f'element face {len(faces)}\n')
-        f.write('property list uchar int vertex_indices\n')
-        f.write('end_header\n')
-        
-        # Write vertices
-        for i, vertex in enumerate(vertices):
-            r, g, b = vertex_colors[i].astype(int)
-            f.write(f'{vertex[0]} {vertex[1]} {vertex[2]} {r} {g} {b}\n')
-        
-        # Write faces
-        for face in faces:
-            f.write(f'3 {face[0]} {face[1]} {face[2]}\n')
-    
-    print(f"Mesh PLY file saved! Open in MeshLab, Blender, or CloudCompare")
-
-def save_detailed_ply(x, y, z, colors, filename, step=2):
-    """Save detailed PLY file for external 3D software (point cloud version)"""
-    print(f"Saving point cloud PLY file: {filename.replace('.ply', '_points.ply')}")
-    
-    # Sample with specified step for detail control
-    x_sub = x[::step, ::step]
-    y_sub = y[::step, ::step]
-    z_sub = z[::step, ::step]
-    colors_sampled = colors[::step, ::step]
-    
-    # Flip vertically to match visualization
-    x_sub = np.flipud(x_sub)
-    y_sub = np.flipud(y_sub)
-    z_sub = np.flipud(z_sub)
-    colors_sampled = np.flipud(colors_sampled)
-    
-    # Flatten for point cloud
-    x_flat = x_sub.flatten()
-    y_flat = y_sub.flatten()
-    z_flat = z_sub.flatten()
-    
-    # Check if colors array has correct shape
-    if len(colors_sampled.shape) == 3 and colors_sampled.shape[-1] == 3:
-        # RGB image
-        colors_flat = colors_sampled.reshape(-1, 3)
-    else:
-        # Grayscale or unexpected format
-        print(f"Color array shape for PLY: {colors_sampled.shape} - using grayscale")
-        gray_values = colors_sampled.flatten()
-        colors_flat = np.stack([gray_values]*3, axis=-1)
-    
-    print(f"Saving {len(x_flat)} points...")
-    
-    points_filename = filename.replace('.ply', '_points.ply')
-    with open(points_filename, 'w') as f:
-        f.write('ply\n')
-        f.write('format ascii 1.0\n')
-        f.write(f'element vertex {len(x_flat)}\n')
-        f.write('property float x\n')
-        f.write('property float y\n')
-        f.write('property float z\n')
-        f.write('property uchar red\n')
-        f.write('property uchar green\n')
-        f.write('property uchar blue\n')
-        f.write('end_header\n')
-        
-        for i in range(len(x_flat)):
-            r, g, b = colors_flat[i].astype(int)
-            f.write(f'{x_flat[i]} {y_flat[i]} {z_flat[i]} {r} {g} {b}\n')
-    
-    print(f"Point cloud PLY file saved!")
-
-def save_depth_image(depth_map, filename):
-    """Save depth map as image"""
-    plt.figure(figsize=(10, 8))
-    plt.imshow(depth_map, cmap='plasma')
-    plt.colorbar(label='Depth')
-    plt.title('Depth Map')
-    plt.axis('off')
-    plt.tight_layout()
-    plt.savefig(filename, dpi=300, bbox_inches='tight')
-    plt.show()
-    print(f"Depth image saved: {filename}")
-
 def main():
     """Main function to process image and create 3D outputs"""
     
-    # Configuration
-    IMAGE_PATH = "reconstructed.png"  # Change this to your image path
-    OUTPUT_NAME = "my_3d_model"
+    # Parse command line arguments
+    parser = argparse.ArgumentParser(description='Convert 2D image to 3D depth visualization')
+    parser.add_argument('--image', type=str, default='reconstructed.png',
+                        help='Path to input image (default: reconstructed.png)')
+    parser.add_argument('--detail', type=int, default=1,
+                        help='Visualization detail level (1=max, 2=half, 3=third, etc.) (default: 1)')
+    parser.add_argument('--elevation', type=float, default=90,
+                        help='Default elevation angle for 3D view (default: 90)')
+    parser.add_argument('--azimuth', type=float, default=90,
+                        help='Default azimuth angle for 3D view (default: 90)')
     
-    VISUALIZATION_DETAIL = 1  # For 3D surface display (1=max detail, 2=half, 3=third, etc.)
-    SAVE_DETAIL = 1           # For saved PLY files (1=max detail, 2=half, 3=third, etc.)
-
-    DEFAULT_ELEVATION = 92
-    DEFAULT_AZIMUTH = 90
-    DEFAULT_ROLL = 0
+    args = parser.parse_args()
     
-    # Flip settings - set to True to flip the object
-    FLIP_VERTICAL = False  # Set to True to flip vertically (top-bottom)
-    FLIP_HORIZONTAL = True  # Set to True for mirror effect (left-right)
-
+    IMAGE_PATH = args.image
+    VISUALIZATION_DETAIL = args.detail
+    DEFAULT_ELEVATION = args.elevation
+    DEFAULT_AZIMUTH = args.azimuth
+    
     if not os.path.exists(IMAGE_PATH):
         print(f"Error: Image file '{IMAGE_PATH}' not found!")
         return
     
     try:
         # Create detailed 3D data
-        x, y, z, colors, original_depth = create_detailed_3d(IMAGE_PATH, OUTPUT_NAME)
+        x, y, z, colors, original_depth = create_detailed_3d(IMAGE_PATH)
         
         # First figure: Original image and depth map
         fig1 = plt.figure(figsize=(14, 6))
@@ -445,10 +273,8 @@ def main():
                            "3D Surface", 
                            ax=ax3, 
                            step=VISUALIZATION_DETAIL,  # Use configured detail level
-                           view_angle=(DEFAULT_ELEVATION, DEFAULT_AZIMUTH),  # Use configured default view
-                           roll=DEFAULT_ROLL,  # Apply roll rotation
-                           flip_v=FLIP_VERTICAL,  # Apply vertical flip if enabled
-                           flip_h=FLIP_HORIZONTAL)  # Apply horizontal flip if enabled
+                           view_angle=(DEFAULT_ELEVATION, DEFAULT_AZIMUTH)  # Use configured default view
+        )
         
         plt.tight_layout()
         plt.show()
