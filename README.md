@@ -23,20 +23,22 @@ The repository provides end-to-end code for 2D inpainting and 3D depth reconstru
 
 The training notebook (`fossil-inpainting-sd.ipynb`) shows the fine-tuning process used on Kaggle with the provided dataset. The LoRA weights are provided but require separate inference setup.
 
-<p align="center">
-  <img src="sample_outputs/damage_pattern_example.gif" alt="Figure 1: Damage Pattern Example" width="70%">
-</p>
+<br></br>
+
+![Figure 1: Damage Pattern](sample_outputs/damage_pattern_example.png)
+
 <p align="center"><em>Figure 1: Example damage pattern applied to fossil specimens.</em></p>
+<br></br>
 
-<p align="center">
-  <img src="sample_outputs/inpainting_results.png" alt="Figure 2: Inpainting Results" width="70%">
-</p>
+![Figure 2: Inpainting Results](sample_outputs/inpainting_results.png)
+
 <p align="center"><em>Figure 2: Inpainting results showing reconstruction quality.</em></p>
+<br></br>
 
-<p align="center">
-  <img src="sample_outputs/base_model_compared.png" alt="Figure 3: Base Model Comparison" width="70%">
-</p>
+![Figure 3: Base Model Comparison](sample_outputs/base_model_compared.png)
+
 <p align="center"><em>Figure 3: Comparison between base model and fine-tuned model.</em></p>
+<br></br>
 
 **3D Reconstruction**
 
@@ -71,15 +73,17 @@ Parameters:
 
 This will generate a depth map and corresponding 3D mesh from your reconstructed fossil image.
 
-<p align="center">
-  <img src="sample_outputs/reconstruction.png" alt="Figure 4: 3D Surface Reconstruction" width="70%">
-</p>
-<p align="center"><em>Figure 4: 3D surface reconstruction from depth estimation.</em></p>
+<br></br>
 
-<p align="center">
-  <img src="sample_outputs/depth_map.png" alt="Figure 5: Depth Map" width="70%">
-</p>
+![Figure 4: 3D Surface Reconstruction](sample_outputs/reconstruction.png)
+
+<p align="center"><em>Figure 4: 3D surface reconstruction from depth estimation.</em></p>
+<br></br>
+
+![Figure 5: Depth Map](sample_outputs/depth_map.png)
+
 <p align="center"><em>Figure 5: Estimated depth map showing surface topology.</em></p>
+<br></br>
 
 ## Citation
 
