@@ -12,12 +12,12 @@ The repository provides end-to-end code for 2D inpainting and 3D depth reconstru
 
 ### Components
 
-| File                         | Description                                                          | Link                                                                                         |
-| ---------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| `fossil-inpainting-sd.ipynb` | Kaggle notebook for fine-tuning Stable Diffusion on ammonite fossils | -                                                                                            |
-| `to_3d/estimate.py`          | Depth estimation and 3D generation using Depth Anything V2           | -                                                                                            |
-| `dataset.zip`                | 465 ammonite specimens                                               | [Access](https://drive.google.com/file/d/1ADHKe8hkKHccMcyGnCBiyZCLnl1mEB3A/view?usp=sharing) |
-| `sd_fossil_lora.zip`         | Fine-tuned LoRA weights for Stable Diffusion                         | [Access](https://drive.google.com/file/d/1Te3pJn9gjz5sdj8qyhXVL5FbDphEUaXU/view?usp=sharing) |
+| File                         | Description                                                               | Link                                                                                         |
+| ---------------------------- | ------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `fossil-inpainting-sd.ipynb` | Kaggle notebook used for fine-tuning Stable Diffusion on ammonite fossils | -                                                                                            |
+| `to_3d/estimate.py`          | Depth estimation and 3D generation using Depth Anything V2                | -                                                                                            |
+| `dataset.zip`                | 465 ammonite specimens                                                    | [Access](https://drive.google.com/file/d/1ADHKe8hkKHccMcyGnCBiyZCLnl1mEB3A/view?usp=sharing) |
+| `sd_fossil_lora.zip`         | Fine-tuned LoRA weights for Stable Diffusion                              | [Access](https://drive.google.com/file/d/1Te3pJn9gjz5sdj8qyhXVL5FbDphEUaXU/view?usp=sharing) |
 
 ## Usage
 
@@ -79,7 +79,7 @@ Parameters:
 
 - `--image`: Path to input image (default: reconstructed.png)
 - `--detail`: Visualization detail level (1=max, 2=half, 3=third, etc.) (default: 1)
-- `--elevation`: Default elevation angle for 3D view (default: 92)
+- `--elevation`: Default elevation angle for 3D view (default: 90)
 - `--azimuth`: Default azimuth angle for 3D view (default: 90)
 
 This will generate a depth map and corresponding 3D mesh from your reconstructed fossil image.
