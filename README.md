@@ -2,11 +2,9 @@
 
 <p align="center"><strong>MSc Artificial Intelligence | University of Essex | 2025</strong></p>
 
-## Overview
+<br/>
 
-This repository contains the implementation of a deep learning pipeline for reconstructing damaged fossil specimens using Stable Diffusion with LoRA fine-tuning. The project explores whether pre-trained diffusion models can be adapted for paleontological reconstruction with limited training data (465 specimens).
-
-The training achieved convergence within 2 epochs, with a PSNR of 32.95 dB and SSIM of 0.9444. By working with 2D views instead of direct 3D generation, this approach circumvents the resolution limitations of voxel-based methods, maintaining morphological detail that would otherwise be lost. The pipeline uses depth estimation to generate partial 3D representations from reconstructed 2D views.
+This repository implements a deep learning methodology for automating fossil reconstruction using Stable Diffusion with LoRA fine-tuning. The dataset was created from 465 ammonite specimens from the GB3D repository by generating 2D views from 3D scans. The model applies inpainting to damaged regions in these views, then uses Depth Anything V2 for depth estimation to generate partial 3D representations. This circumvents resolution limitations of direct 3D generative methods.
 
 ### Components
 
