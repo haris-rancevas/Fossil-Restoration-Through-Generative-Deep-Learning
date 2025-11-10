@@ -1,6 +1,6 @@
-# Fossil Restoration Through Generative Deep Learning
+<h1 align="center">Fossil Restoration Through Generative Deep Learning</h1>
 
-**MSc Artificial Intelligence | University of Essex | 2025**
+<p align="center"><strong>MSc Artificial Intelligence | University of Essex | 2025</strong></p>
 
 This repository contains the implementation of a deep learning pipeline for reconstructing damaged fossil specimens using Stable Diffusion with LoRA fine-tuning. The project explores whether pre-trained diffusion models can be adapted for paleontological reconstruction with limited training data (465 specimens).
 
