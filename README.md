@@ -51,7 +51,7 @@ Thee dataset is derived from 465 distinct fossil specimens from the [GB3D](https
 
 <br></br>
 
-**3D Reconstruction**
+## 3D Reconstruction
 
 To generate 3D models from reconstructed fossil images:
 
